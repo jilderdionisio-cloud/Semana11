@@ -25,7 +25,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean; // New import
 
 @Slf4j
-//@ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class PetServiceMockitoTest {
 
@@ -54,6 +53,9 @@ public class PetServiceMockitoTest {
 
         Mockito.when(this.repository.findById(1))
                 .thenReturn((Optional.of(petExpected)));
+
+
+
         PetDTO pet = null;
 
         try {
