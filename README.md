@@ -1,95 +1,110 @@
-# Petclinic Test - Instrucciones de la actividad
+# Petclinic Test — Guía de la actividad
 
-Este README describe la actividad de pruebas unitarias para la aplicación petclinic_test y contiene los comandos necesarios para ejecutar las pruebas y coordinar el trabajo con Git.
+Guía para ejecutar las pruebas unitarias de la aplicación petclinic_test y coordinar el trabajo con el equipo usando Git.
 
 Requisitos
 - Java JDK 11+ instalado
 - Maven instalado (mvn en PATH)
-- Repositorio clonado localmente (root del proyecto contiene pom.xml)
+- Repositorio clonado localmente (contiene pom.xml)
 
 Estructura relevante
-- Código fuente: src/main/java
+- Código: src/main/java
 - Pruebas: src/test/java
-- Reportes de pruebas: target/surefire-reports (text/xml), `mvn surefire-report:report` genera HTML en target/site
+- Reportes: target/surefire-reports (XML/TXT), HTML en target/site tras surefire-report
 
-Objetivo de la actividad
-Realizar pruebas unitarias (creación, actualización, búsqueda y eliminación) para las tablas y servicios indicados, trabajando en coordinación con el equipo usando Git. Guardar evidencia de la ejecución y del control de versiones.
+Resumen de la actividad
+Realizar pruebas unitarias (crear, actualizar, buscar y eliminar) para los servicios correspondientes a las tablas: vets, owners, specialties y visits. Guardar evidencia de ejecución y del control de versiones.
 
 Casos de prueba
+- CASO 1 — Vets: Clase VetServiceTest (crear, actualizar, buscar, eliminar)
+- CASO 2 — Owners: Clase OwnerServiceTest (crear, actualizar, buscar, eliminar)
+- CASO 3 — Specialties: Clase SpecialtyServiceTest (crear, actualizar, buscar, eliminar)
+- CASO 4 — Visits: Clase VisitServiceTest (crear, actualizar, buscar, eliminar)
 
-CASO 1 — Vets
-- Clase: VetServiceTest
-- Objetivo: pruebas unitarias de creación (create), actualización (update), búsqueda (findById/findAll) y eliminación (delete) de veterinarios.
-- Ubicación: src/test/java/.../VetServiceTest
-- Evidencia: salida de consola de mvn, archivos en target/surefire-reports, capturas de pantalla, commits y PRs con los cambios.
+Evidencia esperada
+- Salida de terminal de mvn (guardar en archivo)
+- Archivos en target/surefire-reports/
+- Capturas de pantalla y/o reporte HTML
+- Commits y Pull Requests con mensajes claros y branch por caso
 
-CASO 2 — Owners
-- Clase: OwnerServiceTest
-- Objetivo: pruebas unitarias de creación, actualización, búsqueda y eliminación de dueños.
-- Ubicación: src/test/java/.../OwnerServiceTest
-- Evidencia: idem CASO 1.
+Comandos rápidos (copiar/pegar)
 
-CASO 3 — Specialties
-- Clase: SpecialtyServiceTest
-- Objetivo: pruebas unitarias de creación, actualización, búsqueda y eliminación de especialidades.
-- Ubicación: src/test/java/.../SpecialtyServiceTest
-- Evidencia: idem CASO 1.
+- Actualizar rama principal:
 
-CASO 4 — Visits
-- Clase: VisitServiceTest
-- Objetivo: pruebas unitarias de creación, actualización, búsqueda y eliminación de visitas.
-- Ubicación: src/test/java/.../VisitServiceTest
-- Evidencia: idem CASO 1.
+```bash
+git fetch origin --prune
+git checkout main
+git pull origin main --ff-only
+```
 
-Comandos Git (workflow recomendado por caso)
-1. Actualizar rama principal:
-   git fetch origin --prune
-   git checkout main
-   git pull origin main --ff-only
+- Crear rama de trabajo (ejemplo vets):
 
-2. Crear rama de trabajo (por ejemplo para vets):
-   git checkout -b feature/tests-vets
+```bash
+git checkout -b feature/tests-vets
+```
 
-3. Hacer cambios, ejecutar pruebas localmente, agregar y commitear:
-   git add -A
-   git commit -m "Add unit tests for VetServiceTest"
-   git push -u origin feature/tests-vets
+- Ejecutar todas las pruebas:
 
-4. Abrir Pull Request y pedir revisión de equipo. Incluir en la PR las evidencias (stdout, screenshots, target/surefire-reports).
+```bash
+mvn test -Dspring.profiles.active=h2
+```
 
-Comandos Maven para ejecutar pruebas
-- Ejecutar todas las pruebas del proyecto:
-  mvn test
+- Ejecutar una sola clase de prueba (por nombre):
 
-- Ejecutar una sola clase de prueba (por nombre de clase):
-  mvn -Dtest=VetServiceTest test
-  mvn -Dtest=OwnerServiceTest test
-  mvn -Dtest=SpecialtyServiceTest test
-  mvn -Dtest=VisitServiceTest test
+```bash
+mvn -Dtest=VetServiceTest test
+mvn -Dtest=OwnerServiceTest test
+mvn -Dtest=SpecialtyServiceTest test
+mvn -Dtest=VisitServiceTest test
+```
 
-- Ejecutar una clase con paquete completo (si hay conflictos de nombre):
-  mvn -Dtest=com.tecsup.petclinic.services.VetServiceTest test
+- Ejecutar por paquete completo (si hay ambigüedad):
 
-- Generar reporte HTML de Surefire (opcional):
-  mvn surefire-report:report
-  abrir target/site/surefire-report.html
+```bash
+mvn -Dtest=com.tecsup.petclinic.services.VetServiceTest test
+```
 
-Evidencia requerida
-- Registro de la ejecución (guardar la salida del terminal o redirigir a archivo):
-  mvn -Dtest=VetServiceTest test | tee vet-tests.log
-- Archivos XML/TXT en target/surefire-reports/ (adjuntar en la entrega)
-- Capturas de pantalla de la ejecución y del reporte HTML
-- Historial de Git: URL del PR, commits con mensajes claros y branch usado
+- Redirigir salida a archivo (ejemplo Vet):
 
-Buenas prácticas de coordinación
-- Hacer una rama por caso o por conjunto de tests relacionados
-- Commits pequeños y atómicos con mensajes descriptivos
-- Abrir PR y asignar revisores del equipo
-- Incluir en la PR la evidencia mencionada
+```bash
+mvn -Dtest=VetServiceTest test | tee vet-tests.log
+```
 
-Soporte y contacto
-- Para problemas en la ejecución de pruebas, revisar dependencias en pom.xml y logs en target/surefire-reports
-- Si los tests fallan por datos, usar mocks o datos de prueba aislados y documentar el motivo en el PR
+- Generar reporte HTML de Surefire:
+
+```bash
+mvn surefire-report:report
+# abrir target/site/surefire-report.html
+```
+
+Flujo Git recomendado (copy/paste)
+
+```bash
+# 1. Actualizar main
+git fetch origin --prune
+git checkout main
+git pull origin main --ff-only
+
+# 2. Crear rama específica
+git checkout -b feature/tests-<caso>
+
+# 3. Hacer cambios, agregar y commitear
+git add -A
+git commit -m "Add unit tests for <Caso>"
+
+# 4. Subir y abrir PR
+git push -u origin feature/tests-<caso>
+# Crear PR en GitHub y asignar revisores
+```
+
+Buenas prácticas
+- Una rama por caso
+- Commits pequeños y descriptivos
+- Incluir evidencia en la PR (logs, capturas, reportes)
+- Si una prueba falla por datos, usar mocks o datos de prueba aislados y documentar el motivo
+
+Soporte
+Revisar pom.xml y target/surefire-reports en caso de fallos. Preguntar al equipo si hay dudas sobre datos de prueba o configuración.
 
 ---
-Archivo actualizado por el asistente. Si desea, puedo commitear y pushear este README a la rama actual o a una nueva rama de trabajo.
+README mejorado y formateado. Subiendo al remoto origin/main con commit y Co-authored-by.
