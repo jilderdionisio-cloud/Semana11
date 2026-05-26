@@ -81,4 +81,91 @@ public class OwnerServiceTest {
         assertEquals(TELEPHONE, newOwnerDTO.getTelephone());
     }
 
+    @Test
+    public void testUpdateOwner() {
+
+        String FIRST_NAME = "Ana";
+        String LAST_NAME = "Lopez";
+        String ADDRESS = "456 Oak St.";
+        String CITY = "Cusco";
+        String TELEPHONE = "111222333";
+
+        String UP_FIRST_NAME = "Anita";
+        String UP_LAST_NAME = "Lopez Diaz";
+        String UP_ADDRESS = "789 Pine St.";
+        String UP_CITY = "Arequipa";
+        String UP_TELEPHONE = "444555666";
+
+        OwnerDTO ownerDTO = OwnerDTO.builder()
+                .firstName(FIRST_NAME)
+                .lastName(LAST_NAME)
+                .address(ADDRESS)
+                .city(CITY)
+                .telephone(TELEPHONE)
+                .build();
+
+        // ------------ Create ---------------
+
+        log.info(">" + ownerDTO);
+        OwnerDTO ownerDTOCreated = this.ownerService.create(ownerDTO);
+        log.info(">>" + ownerDTOCreated);
+
+        // ------------ Update ---------------
+
+        ownerDTOCreated.setFirstName(UP_FIRST_NAME);
+        ownerDTOCreated.setLastName(UP_LAST_NAME);
+        ownerDTOCreated.setAddress(UP_ADDRESS);
+        ownerDTOCreated.setCity(UP_CITY);
+        ownerDTOCreated.setTelephone(UP_TELEPHONE);
+
+        OwnerDTO upgradeOwnerDTO = this.ownerService.update(ownerDTOCreated);
+        log.info(">>>>" + upgradeOwnerDTO);
+
+        assertEquals(UP_FIRST_NAME, upgradeOwnerDTO.getFirstName());
+        assertEquals(UP_LAST_NAME, upgradeOwnerDTO.getLastName());
+        assertEquals(UP_ADDRESS, upgradeOwnerDTO.getAddress());
+        assertEquals(UP_CITY, upgradeOwnerDTO.getCity());
+        assertEquals(UP_TELEPHONE, upgradeOwnerDTO.getTelephone());
+    }
+
+    @Test
+    public void testDeleteOwner() {
+
+        String FIRST_NAME = "Delete";
+        String LAST_NAME = "Owner";
+        String ADDRESS = "Delete Address";
+        String CITY = "Delete City";
+        String TELEPHONE = "000111222";
+
+        // ------------ Create ---------------
+
+        OwnerDTO ownerDTO = OwnerDTO.builder()
+                .firstName(FIRST_NAME)
+                .lastName(LAST_NAME)
+                .address(ADDRESS)
+                .city(CITY)
+                .telephone(TELEPHONE)
+                .build();
+
+        OwnerDTO newOwnerDTO = this.ownerService.create(ownerDTO);
+        log.info("" + ownerDTO);
+
+        // ------------ Delete ---------------
+
+        try {
+            this.ownerService.delete(newOwnerDTO.getId());
+        } catch (OwnerNotFoundException e) {
+            fail(e.getMessage());
+        }
+
+        // ------------ Validation ---------------
+
+        try {
+            this.ownerService.findById(newOwnerDTO.getId());
+            assertTrue(false);
+        } catch (OwnerNotFoundException e) {
+            assertTrue(true);
+        }
+    }
+
 }
